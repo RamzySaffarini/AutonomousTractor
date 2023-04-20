@@ -45,5 +45,18 @@
             "text_horiz_alignment": "center"
         }
         
+   },
+   "#trip_report":
+    {
+        "colours":
+         {
+            "normal_bg":"#333333"
+
+         },
+        "misc":
+        {
+            "text_horiz_alignment": "center"
+        }
+        
    }
 }
