@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
+#import pygame_gui.core.ui_font_dictionary
 from pygame_gui.elements import UIButton
 
 import asyncio
@@ -44,17 +45,17 @@ tapes_crossed = pygame_gui.elements.UITextBox("<b>Tapes Crossed: </b>" + str(num
 
 clock = pygame.time.Clock()
 is_running = True #initialize boolean for indefinite loop
-def callback(sender: address, data: bytearray):
-    print(f"{data}")
-    # if receives indication that numtapes increases
-    # numTapesCrossed += 1
-def generateTripReport():
-   pass
+def generateTripReport(sender: MODEL_NBR_UUID, data: bytearray):
+    s = data.decode("utf-8")
+    print(s)
+    tapes_crossed.set_text("<b>Tapes Crossed: </b>" + s[0] + s[1])
+    time_elapsed.set_text("<b>Time Elapsed:</b> "+s[2]+s[3]+':'+s[4]+s[5])
 
 #places into main async i/o function to be called
 async def main():
     async with BleakClient(address) as client:
-        
+
+
         #allows interactiveness, loops indefinitely
         global is_running #allows global variable to be accessed
         global numTapesCrossed
@@ -71,14 +72,15 @@ async def main():
                         #   print('STOPPING!!!!!!') #for debugging purposes
                           await client.write_gatt_char(MODEL_NBR_UUID, b's') #sends stop signal to Arduino                 
                     if event.ui_element == trip_report:
-                         await client.start_notify(MODEL_NBR_UUID, callback)
-                         await asyncio.sleep(5.0)
+                         await client.write_gatt_char(MODEL_NBR_UUID, b'r')
+                         await client.start_notify(MODEL_NBR_UUID, generateTripReport)
                          await client.stop_notify(MODEL_NBR_UUID)
+
                 
                 manager.process_events(event) # Checks for updates such as clicking
 
             manager.update(time_delta) #adjusts theme based on user interaction, like hovering over buttons
-
+            
             window_surface.blit(background, (0, 0)) #refreshes page as changes happen so it is not constantly refreshing
             manager.draw_ui(window_surface) #draws UI so user can actually see it
 
@@ -87,4 +89,4 @@ async def main():
 asyncio.run(main()) #runs async  i/o loop
 
 
-     
+       
