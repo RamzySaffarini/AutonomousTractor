@@ -39,7 +39,7 @@ trip_report = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 200),
 time_elapsed = pygame_gui.elements.UITextBox("<b>Time Elapsed:</b> 00:00",
                                         relative_rect=pygame.Rect((200, 200), (200, 50)),
                                         manager=manager)
-tapes_crossed = pygame_gui.elements.UITextBox("<b>Tapes Crossed: </b>" + str(numTapesCrossed),
+tapes_crossed = pygame_gui.elements.UITextBox("<b>Tapes Crossed: 00</b>",
                                         relative_rect=pygame.Rect((200, 250), (200, 50)),
                                         manager=manager)
 
@@ -87,6 +87,3 @@ async def main():
             pygame.display.update() #actually impacts the display so user can see
             
 asyncio.run(main()) #runs async  i/o loop
-
-
-       
