@@ -9,7 +9,6 @@ from bleak import BleakClient
 
 address = "a0:6c:65:cf:9e:0e" #MAC
 MODEL_NBR_UUID = "0000FFE1-0000-1000-8000-00805F9B34FB" #UUID
-numTapesCrossed = 0
 
 
 pygame.init() #initializer
@@ -57,7 +56,6 @@ async def main():
 
         #allows interactiveness, loops indefinitely
         global is_running #allows global variable to be accessed
-        global numTapesCrossed
         while is_running: #indefinite loop
             time_delta = clock.tick(60)/1000.0 #Updates clock each run
             for event in pygame.event.get(): #returns if there is an event ()
