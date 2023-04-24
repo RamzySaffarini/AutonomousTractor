@@ -46,10 +46,9 @@ tapes_crossed = pygame_gui.elements.UITextBox("<b>Tapes Crossed: 00</b>",
 clock = pygame.time.Clock()
 is_running = True #initialize boolean for indefinite loop
 def generateTripReport(sender: MODEL_NBR_UUID, data: bytearray):
-    s = data.decode("utf-8")
-    print(s)
-    tapes_crossed.set_text("<b>Tapes Crossed: </b>" + s[0] + s[1])
-    time_elapsed.set_text("<b>Time Elapsed:</b> "+s[2]+s[3]+':'+s[4]+s[5])
+    s = data.decode("utf-8") #decodes data from UTF-8 encoding
+    tapes_crossed.set_text("<b>Tapes Crossed: </b>" + s[0] + s[1]) #sets tapes crossed string with relevant characters
+    time_elapsed.set_text("<b>Time Elapsed:</b> "+s[2]+s[3]+':'+s[4]+s[5]) #sets time elapsed string w/ relevant chars
 
 #places into main async i/o function to be called
 async def main():
@@ -72,9 +71,9 @@ async def main():
                         #   print('STOPPING!!!!!!') #for debugging purposes
                           await client.write_gatt_char(MODEL_NBR_UUID, b's') #sends stop signal to Arduino                 
                     if event.ui_element == trip_report:
-                         await client.write_gatt_char(MODEL_NBR_UUID, b'r')
-                         await client.start_notify(MODEL_NBR_UUID, generateTripReport)
-                         await client.stop_notify(MODEL_NBR_UUID)
+                         await client.write_gatt_char(MODEL_NBR_UUID, b'r') #sends signal to read from Arduino
+                         await client.start_notify(MODEL_NBR_UUID, generateTripReport) #reads said data
+                         await client.stop_notify(MODEL_NBR_UUID) #stops reading to prevent duplicated results
 
                 
                 manager.process_events(event) # Checks for updates such as clicking
